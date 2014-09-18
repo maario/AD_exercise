@@ -63,6 +63,7 @@ public class GraphToMatrix {
 		try {
 			GraphToMatrix g = new GraphToMatrix("../AD_exercise/graphs/graph1.txt");
 			int[][] matrix = g.getMatrix();
+			
 			for(int[] array: matrix){
 				System.out.println(Arrays.toString(array));
 			}
