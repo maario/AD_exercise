@@ -13,7 +13,7 @@ public class GraphToMatrix {
 	private int[][] matrix;
 	private static int size = 0;
 	
-	public GraphToMatrix(String pathToFile) throws FileNotFoundException{
+	public GraphToMatrix(String pathToFile) throws FileNotFoundException {
 		br = new BufferedReader(new FileReader(pathToFile));
 		int x = 0;
 		int y = 0;
@@ -24,14 +24,16 @@ public class GraphToMatrix {
 			line = br.readLine();
 			int count = 0;
 			while(count < size*size){
-				if(parseInt(line) == null){
+				if(parseInt(line) == null) {
 					line = br.readLine();
-				}else{
+				}
+				else {
 					matrix[x][y] = parseInt(line);
-					if(y == 127){
+					if(y == size - 1) {
 						x++;
 						y = 0;
-					}else{
+					}
+					else {
 						y++;
 					}
 					line = br.readLine();
@@ -39,38 +41,43 @@ public class GraphToMatrix {
 				}
 				
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 	}
-	private static Integer parseInt(String line){
-		if(line == null || line.isEmpty()){
+	
+	
+	private static Integer parseInt(String line) {
+		if(line == null || line.isEmpty())
 			return null;
-		}else{
+		else
 			return Integer.parseInt(line);
-		}
 	}
-	public int[][] getMatrix(){
+	
+	
+	public int[][] getMatrix() {
 		return matrix;
 	}
-	public int getSizeOfMatrix(){
+	
+	
+	public int getSizeOfMatrix() {
 		return size;
 	}
 	
-	public static void main(String[] args){
+	
+	public static void main(String[] args) {
 		try {
-			GraphToMatrix g = new GraphToMatrix("../AD_exercise/graphs/graph1.txt");
+			GraphToMatrix g = new GraphToMatrix("../AD_exercise/graphs/testGraph.txt");
 			int[][] matrix = g.getMatrix();
 			
 			for(int[] array: matrix){
 				System.out.println(Arrays.toString(array));
 			}
 			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			System.out.println(e);
+		} 
+		catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
