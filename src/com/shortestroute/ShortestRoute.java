@@ -15,6 +15,7 @@ public class ShortestRoute {
 	private static int[] distances;
 	private int destinationVertex;
 	private ArrayList<Integer> shortestPath;
+	private int destinationDistance;
 	
 	
 	public ShortestRoute(int[][] matrix) {
@@ -35,17 +36,43 @@ public class ShortestRoute {
 		distances[vertexA - 1] = 0;
 		
 		calculateShortestDistanceFromVertex();
-		shortestPath = findShortestRoutePath(distances[vertexB - 1]);
+		destinationDistance = distances[vertexB -1];
+		
+		System.out.println(Arrays.toString(distances));
+		shortestPath = findShortestRoutePath();
 	}
 	
 	
-	private ArrayList<Integer> findShortestRoutePath(int destinationDistance) {
+	private ArrayList<Integer> findShortestRoutePath() {
 		handled.clear();
 		ArrayList<Integer> shortestPath = new ArrayList<Integer>();
-		func1(1); //!!!
+		shortestPath = buildPath(destinationVertex);
+		//func1(1); //!!!
 		return shortestPath;
 	}
 	
+	private ArrayList<Integer> buildPath(int vertex) {
+		ArrayList<Integer> path = new ArrayList<Integer>();
+		if(vertex == 1) {
+			path.add(1);
+		}
+		else {
+			unHandled.clear();
+			evaluateNeighbourVertexes(vertex);
+			while(!unHandled.isEmpty()){
+				int nextVertex = getVertexWithMinDistance();
+				if(distances[nextVertex - 1] + matrix[nextVertex - 1][vertex - 1] == distances[vertex - 1]){
+					path = buildPath(nextVertex);
+					path.add(vertex);
+					unHandled.clear();
+				}
+				
+			}
+		}
+		return path;
+	}
+
+
 	private boolean func1(int vertex){
 		unHandled.clear();
 		handled.add(vertex);
@@ -124,16 +151,19 @@ public class ShortestRoute {
 	
 	public static void main(String... args) {
 		try {			
-			ShortestRoute sr = new ShortestRoute(new GraphToMatrix("../AD_exercise/graphs/test_graph.txt").getMatrix());
+			ShortestRoute sr = new ShortestRoute(new GraphToMatrix("../AD_exercise/graphs/testGraph.txt").getMatrix());
 			System.out.println("Matrix: \n");
-			new GraphToMatrix("../AD_exercise/graphs/test_graph.txt").printMatrix();
+			new GraphToMatrix("../AD_exercise/graphs/testGraph.txt").printMatrix();
 			System.out.println('\n');
-			sr.shortestPathBetweenNodes(1, 3);
+			sr.shortestPathBetweenNodes(1, 4);
 			
-			System.out.printf("Shortest distance to %s is %s\n\n", 3, distances[2]);
+			System.out.printf("Shortest distance from %s to %s is %s\n\n", 1 , 4, distances[2]);
 			
 			for (int i : distances)
 				System.out.println(i);
+			
+			System.out.printf("\n\nShortest path is %s",sr.shortestPath.toString());
+			
 		} 
 		catch (FileNotFoundException e) {
 			System.out.println("File not found\n");
