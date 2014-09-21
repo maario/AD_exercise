@@ -13,7 +13,7 @@ public class ShortestRoute {
 	private Set<Integer> handled;
 	private PriorityQueue<Vertex> unHandled;
 	private static int[] distances;
-	private int destinationNode;
+	private int destinationVertex;
 	private ArrayList<Integer> shortestPath;
 	
 	
@@ -26,7 +26,7 @@ public class ShortestRoute {
 	
 	
 	private void shortestPathBetweenNodes(int vertexA, int vertexB) {
-		destinationNode = vertexB;
+		destinationVertex = vertexB;
 		
 		for (int i = 0; i < matrix.length; i++)
 			distances[i] = Integer.MAX_VALUE;
@@ -40,9 +40,36 @@ public class ShortestRoute {
 	
 	
 	private ArrayList<Integer> findShortestRoutePath(int destinationDistance) {
+		handled.clear();
 		ArrayList<Integer> shortestPath = new ArrayList<Integer>();
-		
+		func1(1); //!!!
 		return shortestPath;
+	}
+	
+	private boolean func1(int vertex){
+		unHandled.clear();
+		handled.add(vertex);
+		shortestPath.add(vertex);
+		evaluateNeighbourVertexes(vertex);
+		boolean loop = true;
+		while(loop){
+			if(unHandled.isEmpty()){
+				loop=false;
+			}
+			else {
+				int nextVertex = getVertexWithMinDistance();
+				if(distances[nextVertex -1] <= matrix[vertex-1][nextVertex-1] && distances[destinationVertex - 1] > distances[nextVertex -1]){
+					if(nextVertex == destinationVertex){
+						loop = false;
+					}else{
+						func1(nextVertex);
+					}
+				}
+			}
+		}
+		shortestPath.remove(shortestPath.size() - 1 );
+		return false;
+		
 	}
 	
 	
