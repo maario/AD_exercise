@@ -67,6 +67,13 @@ public class GraphToMatrix {
 	}
 	
 	
+	public void printMatrix() {
+		for(int[] array: matrix){
+			System.out.println(Arrays.toString(array));
+		}
+	}
+	
+	
 	public static void main(String[] args) {
 		try {
 			GraphToMatrix g = new GraphToMatrix("../AD_exercise/graphs/testGraph.txt");
