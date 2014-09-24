@@ -41,8 +41,7 @@ public class ShortestRoute {
 		
 		calculateShortestDistanceFromVertex();
 		destinationDistance = distances[destinationVertex -1];
-		
-		System.out.println(Arrays.toString(distances));
+
 		shortestPath = findShortestRoutePath();
 	}
 	
@@ -55,24 +54,36 @@ public class ShortestRoute {
 	}
 	
 	private ArrayList<Integer> buildPath(int vertex) {
+		handled.add(vertex);
 		ArrayList<Integer> path = new ArrayList<Integer>();
-		if(vertex == 1) {
-			path.add(1);
+		if(vertex == startVertex) {
+			path.add(startVertex);
 		}
 		else {
 			unHandled.clear();
-			evaluateNeighbourVertexes(vertex);
+			evaluateParentVertexes(vertex);
 			while(!unHandled.isEmpty()){
 				int nextVertex = getVertexWithMinDistance();
-				if(distances[nextVertex - 1] + matrix[nextVertex - 1][vertex - 1] == distances[vertex - 1]){
-					path = buildPath(nextVertex);
-					path.add(vertex);
-					unHandled.clear();
+				if(matrix[nextVertex - 1][vertex -1] != -1 && distances[nextVertex - 1] != -1){
+					if(distances[nextVertex - 1] + matrix[nextVertex - 1][vertex - 1] == distances[vertex - 1]){
+						path = buildPath(nextVertex);
+						path.add(vertex);
+						unHandled.clear();
+					}
 				}
-				
 			}
 		}
 		return path;
+	}
+	
+	private void evaluateParentVertexes(int vertex) {
+		for (int i = 1; i <= matrixSize; i++) {
+			if (!handled.contains(i)) {
+				if (matrix[i - 1][vertex - 1] != -1) {
+					unHandled.add(new Vertex(i, distances[i - 1]));
+				}
+			}
+		}
 	}
 	
 	
@@ -163,7 +174,8 @@ public class ShortestRoute {
 			System.out.println('\n');
 			sr.shortestPathBetweenNodes(1, 81);
 			
-			System.out.printf("Shortest distance from %s to %s is %s\n\n", 1 , 81, distances[2]);
+			System.out.printf("Shortest distance from %s to %s is %s\n\n", 1 , 81, distances[80]);
+
 			
 			for (int i : distances)
 				System.out.println(i);
