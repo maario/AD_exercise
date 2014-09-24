@@ -10,9 +10,11 @@ import java.util.Set;
 
 public class ShortestRoute {
 	private int[][] matrix;
+	private int matrixSize;
 	private Set<Integer> handled;
 	private PriorityQueue<Vertex> unHandled;
 	private static int[] distances;
+	private int startVertex;
 	private int destinationVertex;
 	private ArrayList<Integer> shortestPath;
 	private int destinationDistance;
@@ -21,22 +23,24 @@ public class ShortestRoute {
 	public ShortestRoute(int[][] matrix) {
 		this.matrix = matrix;
 		handled = new HashSet<Integer>();
-		unHandled = new PriorityQueue<Vertex>(matrix.length, new Vertex());
-		distances = new int[matrix.length];
+		unHandled = new VertexPriorityQueue<Vertex>(matrix.length, new Vertex());
+		matrixSize = matrix.length;
+		distances = new int[matrixSize];
 	}
 	
 	
 	private void shortestPathBetweenNodes(int vertexA, int vertexB) {
+		startVertex = vertexA;
 		destinationVertex = vertexB;
 		
-		for (int i = 0; i < matrix.length; i++)
+		for (int i = 0; i < matrixSize; i++)
 			distances[i] = Integer.MAX_VALUE;
 		
-		unHandled.add(new Vertex(vertexA, 0));
+		unHandled.add(new Vertex(startVertex, 0));
 		distances[vertexA - 1] = 0;
 		
 		calculateShortestDistanceFromVertex();
-		destinationDistance = distances[vertexB -1];
+		destinationDistance = distances[destinationVertex -1];
 		
 		System.out.println(Arrays.toString(distances));
 		shortestPath = findShortestRoutePath();
@@ -47,7 +51,6 @@ public class ShortestRoute {
 		handled.clear();
 		ArrayList<Integer> shortestPath = new ArrayList<Integer>();
 		shortestPath = buildPath(destinationVertex);
-		//func1(1); //!!!
 		return shortestPath;
 	}
 	
@@ -71,33 +74,6 @@ public class ShortestRoute {
 		}
 		return path;
 	}
-
-
-	private boolean func1(int vertex){
-		unHandled.clear();
-		handled.add(vertex);
-		shortestPath.add(vertex);
-		evaluateNeighbourVertexes(vertex);
-		boolean loop = true;
-		while(loop){
-			if(unHandled.isEmpty()){
-				loop=false;
-			}
-			else {
-				int nextVertex = getVertexWithMinDistance();
-				if(distances[nextVertex -1] <= matrix[vertex-1][nextVertex-1] && distances[destinationVertex - 1] > distances[nextVertex -1]){
-					if(nextVertex == destinationVertex){
-						loop = false;
-					}else{
-						func1(nextVertex);
-					}
-				}
-			}
-		}
-		shortestPath.remove(shortestPath.size() - 1 );
-		return false;
-		
-	}
 	
 	
 	private void calculateShortestDistanceFromVertex() {
@@ -117,7 +93,7 @@ public class ShortestRoute {
 	
 	
 	private void evaluateNeighbourVertexes(int vertex) {
-		for (int i = 1; i <= matrix.length; i++) {
+		for (int i = 1; i <= matrixSize; i++) {
 			if (!handled.contains(i)) {
 				if (matrix[vertex - 1][i - 1] != -1) {
 					int newDistance = distances[vertex - 1] + matrix[vertex - 1][i - 1];
@@ -146,18 +122,48 @@ public class ShortestRoute {
 	    public int compare(Vertex vertexA, Vertex vertexB) {
 			return (vertexA.cost < vertexB.cost) ? -1 : (vertexA.cost > vertexB.cost) ? 1 : 0;
 	    }
+		
+		@Override
+		public boolean equals(Object o) {
+			if (o == null)
+				return false;
+			if (!(o instanceof Vertex))
+				return false;				
+			Vertex v = (Vertex)o;
+			if (this.id == v.id)
+				return true;
+			return false;
+		}
+		
+	}
+	
+	
+	@SuppressWarnings({ "serial", "hiding" })
+	private static class VertexPriorityQueue<Vertex> extends PriorityQueue<Vertex> {
+		
+		public VertexPriorityQueue(int size, Comparator<? super Vertex> vertex) {
+			super(size, vertex);
+		}
+		
+		@Override
+		public boolean add(Vertex vertex) {
+			if (!super.contains(vertex)) {
+				return super.add(vertex);
+			}
+			return false;
+		}	
 	}
 	
 	
 	public static void main(String... args) {
 		try {			
-			ShortestRoute sr = new ShortestRoute(new GraphToMatrix("../AD_exercise/graphs/testGraph.txt").getMatrix());
+			ShortestRoute sr = new ShortestRoute(new GraphToMatrix("../AD_exercise/graphs/graph1.txt").getMatrix());
 			System.out.println("Matrix: \n");
-			new GraphToMatrix("../AD_exercise/graphs/testGraph.txt").printMatrix();
+			new GraphToMatrix("../AD_exercise/graphs/graph1.txt").printMatrix();
 			System.out.println('\n');
-			sr.shortestPathBetweenNodes(1, 4);
+			sr.shortestPathBetweenNodes(1, 81);
 			
-			System.out.printf("Shortest distance from %s to %s is %s\n\n", 1 , 4, distances[2]);
+			System.out.printf("Shortest distance from %s to %s is %s\n\n", 1 , 81, distances[2]);
 			
 			for (int i : distances)
 				System.out.println(i);
