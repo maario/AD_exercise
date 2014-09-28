@@ -11,6 +11,7 @@ public class ShortestPathCalculator {
 			ShortestRoute sr = new ShortestRoute(new GraphToMatrix("graphs/graph1.txt").getMatrix());
 			ShortestRoute sr2 = new ShortestRoute(new GraphToMatrix("graphs/graph2.txt").getMatrix());
 			
+			System.out.println("\n\n");
 			System.out.println("=====================================");
 			System.out.println("||                                 ||");
 			System.out.println("||    SHORTEST PATH CALCULATOR     ||");
@@ -29,7 +30,7 @@ public class ShortestPathCalculator {
 				System.out.printf("Searching the shortest path between %s and %s...\n", args[0], args[1]);
 				shortestPathBetweenNodes(sr, sr2, args[0], args[1]);
 			}
-			System.out.printf("\nTotal running time: %s (ms)\n", System.currentTimeMillis() - startTime);
+			System.out.printf("\nTotal running time: %s (ms)\n\n\n", System.currentTimeMillis() - startTime);
 		} 
 		catch (FileNotFoundException e) {
 			System.out.println("File not found\n");
