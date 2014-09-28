@@ -90,8 +90,8 @@ public class ShortestRoute {
 	private void calculateShortestDistanceFromVertex() {
 		while (!unHandled.isEmpty()) {
 			int nextVertex = getVertexWithMinDistance();
-			/**if (nextNode == destinationNode)
-				break;**/
+			if (nextVertex == destinationVertex)
+				break;
 			handled.add(nextVertex);
 			evaluateNeighbourVertexes(nextVertex);
 		}
@@ -161,27 +161,34 @@ public class ShortestRoute {
 			if (!super.contains(vertex)) {
 				return super.add(vertex);
 			}
-			return false;
+			else {
+				super.remove(vertex);
+				return super.add(vertex);
+			}
 		}	
 	}
 	
 	
 	public static void main(String... args) {
 		try {			
-			ShortestRoute sr = new ShortestRoute(new GraphToMatrix("../AD_exercise/graphs/graph1.txt").getMatrix());
+			ShortestRoute sr = null; 
 			System.out.println("Matrix: \n");
 			new GraphToMatrix("../AD_exercise/graphs/graph1.txt").printMatrix();
 			System.out.println('\n');
-			sr.shortestPathBetweenNodes(1, 81);
 			
-			System.out.printf("Shortest distance from %s to %s is %s\n\n", 1 , 81, distances[80]);
-
 			
-			for (int i : distances)
-				System.out.println(i);
-			
-			System.out.printf("\n\nShortest path is %s",sr.shortestPath.toString());
-			
+			long start = System.currentTimeMillis();
+			for (int i = 0; i < 128; i++) {
+				for (int j = 0; j < 128; j++) {
+					if (i != j) {
+						sr = new ShortestRoute(new GraphToMatrix("../AD_exercise/graphs/graph1.txt").getMatrix());
+						sr.shortestPathBetweenNodes(i + 1, j + 1);					
+						System.out.printf("\nShortest distance from %s to %s is %s\n", i + 1, j + 1, distances[j]);			
+						System.out.printf("Shortest path is %s\n",sr.shortestPath.toString());
+					}
+				}
+			}
+			System.out.println(System.currentTimeMillis() - start);
 		} 
 		catch (FileNotFoundException e) {
 			System.out.println("File not found\n");
