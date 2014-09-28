@@ -2,7 +2,6 @@ package com.shortestroute;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.PriorityQueue;
@@ -17,7 +16,6 @@ public class ShortestRoute {
 	private int startVertex;
 	private int destinationVertex;
 	private ArrayList<Integer> shortestPath;
-	private int destinationDistance;
 	
 	
 	public ShortestRoute(int[][] matrix) {
@@ -29,7 +27,22 @@ public class ShortestRoute {
 	}
 	
 	
-	private void shortestPathBetweenNodes(int vertexA, int vertexB) {
+	protected int getSizeOfMatrix() {
+		return this.matrixSize;
+	}
+	
+	
+	protected int getDistanceToVertex(int vertex) {
+		return distances[vertex - 1];
+	}
+	
+	
+	protected ArrayList<Integer> getPath() {
+		return this.shortestPath;
+	}
+	
+	
+	protected void shortestPathBetweenNodes(int vertexA, int vertexB) {
 		startVertex = vertexA;
 		destinationVertex = vertexB;
 		
@@ -38,10 +51,7 @@ public class ShortestRoute {
 		
 		unHandled.add(new Vertex(startVertex, 0));
 		distances[vertexA - 1] = 0;
-		
 		calculateShortestDistanceFromVertex();
-		destinationDistance = distances[destinationVertex -1];
-
 		shortestPath = findShortestRoutePath();
 	}
 	
@@ -173,7 +183,7 @@ public class ShortestRoute {
 		try {			
 			ShortestRoute sr = null; 
 			System.out.println("Matrix: \n");
-			new GraphToMatrix("../AD_exercise/graphs/graph1.txt").printMatrix();
+			new GraphToMatrix("graphs/graph1.txt").printMatrix();
 			System.out.println('\n');
 			
 			ArrayList<Integer> longestAndShortestPath = new ArrayList<>();
@@ -182,7 +192,7 @@ public class ShortestRoute {
 			for (int i = 0; i < 128; i++) {
 				for (int j = 0; j < 128; j++) {
 					if (i != j) {
-						sr = new ShortestRoute(new GraphToMatrix("../AD_exercise/graphs/graph1.txt").getMatrix());
+						sr = new ShortestRoute(new GraphToMatrix("graphs/graph1.txt").getMatrix());
 						sr.shortestPathBetweenNodes(i + 1, j + 1);
 						if(longestAndShortestPath.size() < sr.shortestPath.size()) {
 							longestAndShortestPath = sr.shortestPath;
@@ -198,7 +208,7 @@ public class ShortestRoute {
 			
 			
 			
-			sr = new ShortestRoute(new GraphToMatrix("../AD_exercise/graphs/graph1.txt").getMatrix());
+			sr = new ShortestRoute(new GraphToMatrix("graphs/graph1.txt").getMatrix());
 			sr.shortestPathBetweenNodes(8, 103);
 			System.out.printf("\nShortest distance from %s to %s is %s\n", 8, 103, distances[102]);			
 			System.out.printf("Shortest path is %s\n",sr.shortestPath.toString());
