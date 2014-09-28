@@ -30,7 +30,7 @@ public class ShortestPathCalculator {
 				System.out.printf("Searching the shortest path between %s and %s...\n", args[0], args[1]);
 				shortestPathBetweenNodes(sr, sr2, args[0], args[1]);
 			}
-			System.out.printf("\nTotal running time: %s (ms)", System.currentTimeMillis() - startTime);
+			System.out.printf("\nTotal running time: %s (ms)\n", System.currentTimeMillis() - startTime);
 		} 
 		catch (FileNotFoundException e) {
 			System.out.println("File not found\n");
