@@ -2,7 +2,9 @@ package com.shortestroute;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -16,6 +18,7 @@ public class ShortestRoute {
 	private int startVertex;
 	private int destinationVertex;
 	private ArrayList<Integer> shortestPath;
+	private HashMap<Integer,Integer> reverseSteps;
 	
 	
 	public ShortestRoute(int[][] matrix) {
@@ -24,6 +27,7 @@ public class ShortestRoute {
 		unHandled = new VertexPriorityQueue<Vertex>(matrix.length, new Vertex());
 		matrixSize = matrix.length;
 		distances = new int[matrixSize];
+		reverseSteps = new HashMap<Integer,Integer>();
 	}
 	
 	
@@ -42,7 +46,7 @@ public class ShortestRoute {
 	}
 	
 	
-	protected void shortestPathBetweenNodes(int vertexA, int vertexB) {
+	protected void shortestPathBetweenNodes(int vertexA, int vertexB) {		
 		startVertex = vertexA;
 		destinationVertex = vertexB;
 		
@@ -50,38 +54,25 @@ public class ShortestRoute {
 			distances[i] = Integer.MAX_VALUE;
 		
 		unHandled.add(new Vertex(startVertex, 0));
-		distances[vertexA - 1] = 0;
+		distances[startVertex - 1] = 0;
 		calculateShortestDistanceFromVertex();
 		shortestPath = findShortestRoutePath();
 	}
 	
-	
 	private ArrayList<Integer> findShortestRoutePath() {
-		handled.clear();
-		ArrayList<Integer> shortestPath = new ArrayList<Integer>();
+		ArrayList<Integer> shortestPath = new ArrayList<>();
 		shortestPath = buildPath(destinationVertex);
 		return shortestPath;
 	}
 	
 	private ArrayList<Integer> buildPath(int vertex) {
-		handled.add(vertex);
-		ArrayList<Integer> path = new ArrayList<Integer>();
-		if(vertex == startVertex) {
+		ArrayList<Integer> path = new ArrayList<>();
+		if(vertex == startVertex){
 			path.add(startVertex);
 		}
 		else {
-			unHandled.clear();
-			evaluateParentVertexes(vertex);
-			while(!unHandled.isEmpty()){
-				int nextVertex = getVertexWithMinDistance();
-				if(matrix[nextVertex - 1][vertex -1] != -1 && distances[nextVertex - 1] != -1){
-					if(distances[nextVertex - 1] + matrix[nextVertex - 1][vertex - 1] == distances[vertex - 1]){
-						path = buildPath(nextVertex);
-						path.add(vertex);
-						unHandled.clear();
-					}
-				}
-			}
+			path = buildPath(reverseSteps.get(vertex));
+			path.add(vertex);
 		}
 		return path;
 	}
@@ -120,6 +111,7 @@ public class ShortestRoute {
 					int newDistance = distances[vertex - 1] + matrix[vertex - 1][i - 1];
 					if (newDistance < distances[i - 1]) {
 						distances[i - 1] = newDistance;
+						reverseSteps.put(i, vertex);
 					}
 					unHandled.add(new Vertex(i, distances[i - 1]));
 				}
@@ -189,7 +181,7 @@ public class ShortestRoute {
 			ArrayList<Integer> longestAndShortestPath = new ArrayList<>();
 			Integer cost = 0;
 			long start = System.currentTimeMillis();
-			for (int i = 0; i < 128; i++) {
+			/*for (int i = 0; i < 128; i++) {
 				for (int j = 0; j < 128; j++) {
 					if (i != j) {
 						sr = new ShortestRoute(new GraphToMatrix("graphs/graph1.txt").getMatrix());
@@ -205,14 +197,15 @@ public class ShortestRoute {
 			}
 			System.out.printf("\nShortest distance from %s to %s is %s\n", longestAndShortestPath.get(0), longestAndShortestPath.get(longestAndShortestPath.size() - 1), cost);			
 			System.out.printf("Shortest path is %s\n",longestAndShortestPath.toString());
-			
+			*/
 			
 			
 			sr = new ShortestRoute(new GraphToMatrix("graphs/graph1.txt").getMatrix());
-			sr.shortestPathBetweenNodes(8, 103);
-			System.out.printf("\nShortest distance from %s to %s is %s\n", 8, 103, distances[102]);			
+			sr.shortestPathBetweenNodes(2, 1);
+			System.out.printf("\nShortest distance from %s to %s is %s\n", 2, 81, distances[80]);			
 			System.out.printf("Shortest path is %s\n",sr.shortestPath.toString());
 			
+			System.out.printf("%s",sr.reverseSteps.toString());
 			System.out.println(System.currentTimeMillis() - start);
 		} 
 		catch (FileNotFoundException e) {

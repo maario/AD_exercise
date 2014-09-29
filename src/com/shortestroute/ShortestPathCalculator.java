@@ -22,9 +22,9 @@ public class ShortestPathCalculator {
 			if (args == null || args.length < 2) {
 				System.out.println("Searching the shortest path containing the most vertexes...\n");
 				System.out.println("... from graph1:");
-				findLongestShortestPath(sr);
+				findLongestShortestPath(new GraphToMatrix("graphs/graph1.txt").getMatrix());
 				System.out.println("\n... from graph2:");
-				findLongestShortestPath(sr2);
+				findLongestShortestPath(new GraphToMatrix("graphs/graph2.txt").getMatrix());
 			}
 			else {
 				System.out.printf("Searching the shortest path between %s and %s...\n", args[0], args[1]);
@@ -66,14 +66,14 @@ public class ShortestPathCalculator {
 	}
 
 	
-	private static void findLongestShortestPath(ShortestRoute sr) {
+	private static void findLongestShortestPath(int[][] matrix) {
 		ArrayList<Integer> longestAndShortestPath = new ArrayList<>();
 		Integer cost = 0;
-		ShortestRoute srNew = sr;
+		ShortestRoute srNew = null;
 		for (int i = 0; i < 128; i++) {
 			for (int j = 0; j < 128; j++) {
 				if (i != j) {
-					srNew = sr;
+					srNew = new ShortestRoute(matrix);
 					srNew.shortestPathBetweenNodes(i + 1, j + 1);
 					if(longestAndShortestPath.size() < srNew.getPath().size()) {
 						longestAndShortestPath = srNew.getPath();
