@@ -50,7 +50,7 @@ public class GraphToMatrix {
 	
 	
 	private static Integer parseInt(String line) {
-		if(line == null || line.isEmpty())
+		if (line == null || line.isEmpty())
 			return null;
 		else
 			return Integer.parseInt(line);
@@ -68,9 +68,8 @@ public class GraphToMatrix {
 	
 	
 	public void printMatrix() {
-		for(int[] array: matrix){
+		for (int[] array: matrix)
 			System.out.println(Arrays.toString(array));
-		}
 	}
 	
 	

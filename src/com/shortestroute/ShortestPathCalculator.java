@@ -12,11 +12,11 @@ public class ShortestPathCalculator {
 			ShortestRoute sr2 = new ShortestRoute(new GraphToMatrix("graphs/graph2.txt").getMatrix());
 			
 			System.out.println("\n\n");
-			System.out.println("=====================================");
-			System.out.println("||                                 ||");
-			System.out.println("||    SHORTEST PATH CALCULATOR     ||");
-			System.out.println("||                                 ||");
-			System.out.println("=====================================");
+			System.out.println("====================================");
+			System.out.println("||                                ||");
+			System.out.println("||    SHORTEST PATH CALCULATOR    ||");
+			System.out.println("||                                ||");
+			System.out.println("====================================");
 			System.out.println("\n\n");
 			
 			if (args == null || args.length < 2) {
@@ -88,7 +88,7 @@ public class ShortestPathCalculator {
 	
 	
 	private static Integer parseInt(String number) {
-		if(number == null || number.isEmpty())
+		if (number == null || number.isEmpty())
 			return null;
 		else
 			return Integer.parseInt(number);
