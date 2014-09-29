@@ -83,7 +83,7 @@ public class ShortestPathCalculator {
 			}
 		}
 		System.out.printf("\nShortest distance from %s to %s is %s\n", longestAndShortestPath.get(0), longestAndShortestPath.get(longestAndShortestPath.size() - 1), cost);			
-		System.out.printf("Shortest path is %s\n",longestAndShortestPath.toString());
+		System.out.printf("Longest shortest path is %s\n",longestAndShortestPath.toString());
 	}
 	
 	
