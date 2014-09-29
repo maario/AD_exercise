@@ -2,7 +2,6 @@ package com.shortestroute;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,17 +75,6 @@ public class ShortestRoute {
 		}
 		return path;
 	}
-	
-	private void evaluateParentVertexes(int vertex) {
-		for (int i = 1; i <= matrixSize; i++) {
-			if (!handled.contains(i)) {
-				if (matrix[i - 1][vertex - 1] != -1) {
-					unHandled.add(new Vertex(i, distances[i - 1]));
-				}
-			}
-		}
-	}
-	
 	
 	private void calculateShortestDistanceFromVertex() {
 		while (!unHandled.isEmpty()) {
