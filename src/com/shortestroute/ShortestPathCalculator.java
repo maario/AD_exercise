@@ -4,6 +4,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class ShortestPathCalculator {
+	private static final String HEAD_TEXT = "\n\n"
+			+ "====================================\n"
+			+ "||                                ||\n"
+			+ "||    SHORTEST PATH CALCULATOR    ||\n"
+			+ "||                                ||\n"
+			+ "====================================\n";
 	
 	public static void main(String... args) {
 		try {
@@ -11,13 +17,7 @@ public class ShortestPathCalculator {
 			ShortestRoute sr = new ShortestRoute(new GraphToMatrix("graphs/graph1.txt").getMatrix());
 			ShortestRoute sr2 = new ShortestRoute(new GraphToMatrix("graphs/graph2.txt").getMatrix());
 			
-			System.out.println("\n\n");
-			System.out.println("====================================");
-			System.out.println("||                                ||");
-			System.out.println("||    SHORTEST PATH CALCULATOR    ||");
-			System.out.println("||                                ||");
-			System.out.println("====================================");
-			System.out.println("\n\n");
+			System.out.println(HEAD_TEXT);
 			
 			if (args == null || args.length < 2) {
 				System.out.println("Searching the shortest path containing the most vertexes...\n");
@@ -70,19 +70,15 @@ public class ShortestPathCalculator {
 		ArrayList<Integer> longestAndShortestPath = new ArrayList<>();
 		Integer cost = 0;
 		ShortestRoute srNew = null;
-		for (int i = 0; i < 128; i++) {
-			for (int j = 0; j < 128; j++) {
-				if (i != j) {
-					srNew = new ShortestRoute(matrix);
-					srNew.shortestPathBetweenNodes(i + 1, j + 1);
-					if(longestAndShortestPath.size() < srNew.getPath().size()) {
-						longestAndShortestPath = srNew.getPath();
-						cost = srNew.getDistanceToVertex(j + 1);
-					}
-				}
+		for(int i = 0 ; i < 128; i++) {
+			srNew = new ShortestRoute(matrix);
+			srNew.shortestPathBetweenNodes(i + 1);
+			if(longestAndShortestPath.size() < srNew.getPath().size()) {
+				longestAndShortestPath = srNew.getPath();
+				cost = srNew.getDistanceToVertex(srNew.getPath().get(srNew.getPath().size() - 1));
 			}
 		}
-		System.out.printf("\nShortest distance from %s to %s is %s\n", longestAndShortestPath.get(0), longestAndShortestPath.get(longestAndShortestPath.size() - 1), cost);			
+		System.out.printf("\nShortest distance with the most vertexes from %s to %s is %s\n", longestAndShortestPath.get(0), longestAndShortestPath.get(longestAndShortestPath.size() - 1), cost);			
 		System.out.printf("Longest shortest path is %s\n",longestAndShortestPath.toString());
 	}
 	

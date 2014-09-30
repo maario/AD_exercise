@@ -38,6 +38,9 @@ public class ShortestRoute {
 		return this.shortestPath;
 	}
 	
+	protected void shortestPathBetweenNodes(int startVertex) {
+		shortestPathBetweenNodes(startVertex,-1);
+	}
 	
 	protected void shortestPathBetweenNodes(int vertexA, int vertexB) {		
 		startVertexId = vertexA;
@@ -87,9 +90,17 @@ public class ShortestRoute {
 	
 	private ArrayList<Integer> findShortestRoutePath() {
 		ArrayList<Integer> shortestPath = new ArrayList<>();
-		Vertex destinationVertex = handled.get(destinationVertexId);
-		shortestPath = buildPath(destinationVertex);
-		
+		if(destinationVertexId == -1){
+			for(Integer key: handled.keySet()) {
+				ArrayList<Integer> tempPath = buildPath(handled.get(key));
+				if(shortestPath.size() < tempPath.size()) {
+					shortestPath = tempPath;
+				}
+			}
+		}else{
+			Vertex destinationVertex = handled.get(destinationVertexId);
+			shortestPath = buildPath(destinationVertex);
+		}
 		return shortestPath;
 	}
 	
