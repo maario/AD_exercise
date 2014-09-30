@@ -5,11 +5,12 @@ import java.util.ArrayList;
 
 public class ShortestPathCalculator {
 	private static final String HEAD_TEXT = "\n\n"
-			+ "====================================\n"
-			+ "||                                ||\n"
-			+ "||    SHORTEST PATH CALCULATOR    ||\n"
-			+ "||                                ||\n"
-			+ "====================================\n";
+			+ "\t====================================\n"
+			+ "\t||                                ||\n"
+			+ "\t||    SHORTEST PATH CALCULATOR    ||\n"
+			+ "\t||     (Dijkstras algorithm)      ||\n"
+			+ "\t||                                ||\n"
+			+ "\t====================================\n";
 	
 	public static void main(String... args) {
 		try {
@@ -21,13 +22,13 @@ public class ShortestPathCalculator {
 			
 			if (args == null || args.length < 2) {
 				System.out.println("Searching the shortest path containing the most vertexes...\n");
-				System.out.println("... from graph1:");
+				System.out.println("\n... from graph1:");
 				findLongestShortestPath(new GraphToMatrix("graphs/graph1.txt").getMatrix());
 				System.out.println("\n... from graph2:");
 				findLongestShortestPath(new GraphToMatrix("graphs/graph2.txt").getMatrix());
 			}
 			else {
-				System.out.printf("Searching the shortest path between %s and %s...\n", args[0], args[1]);
+				System.out.printf("Searching the shortest path between %s and %s...\n\n", args[0], args[1]);
 				shortestPathBetweenNodes(sr, sr2, args[0], args[1]);
 			}
 			System.out.printf("\nTotal running time: %s (ms)\n\n\n", System.currentTimeMillis() - startTime);
@@ -54,14 +55,14 @@ public class ShortestPathCalculator {
 			throw new Exception("Given arguments (" + start + ", " + destination + ") are invalid: must be 1 to " + maxSize + "\n");
 		
 		sr.shortestPathBetweenNodes(startVertex, destinationVertex);
-		System.out.println("... in graph1:\n");
+		System.out.println("\n... in graph1:");
 		System.out.printf("\nShortest distance from %s to %s is %s\n", startVertex, destinationVertex, sr.getDistanceToVertex(destinationVertex));			
-		System.out.printf("Shortest path is %s\n",sr.getPath().toString());
+		System.out.printf("Route: %s",sr.getPath().toString());
 		System.out.println("\n");
 		sr2.shortestPathBetweenNodes(startVertex, destinationVertex);
-		System.out.println("... in graph2:\n");
+		System.out.println("\n... in graph2:");
 		System.out.printf("\nShortest distance from %s to %s is %s\n", startVertex, destinationVertex, sr2.getDistanceToVertex(destinationVertex));			
-		System.out.printf("Shortest path is %s\n",sr2.getPath().toString());
+		System.out.printf("Route: %s",sr2.getPath().toString());
 		System.out.println("\n");
 	}
 
@@ -78,8 +79,8 @@ public class ShortestPathCalculator {
 				cost = srNew.getDistanceToVertex(srNew.getPath().get(srNew.getPath().size() - 1));
 			}
 		}
-		System.out.printf("\nShortest distance with the most vertexes from %s to %s is %s\n", longestAndShortestPath.get(0), longestAndShortestPath.get(longestAndShortestPath.size() - 1), cost);			
-		System.out.printf("Longest shortest path is %s\n",longestAndShortestPath.toString());
+		System.out.printf("\nShortest path with the most vertexes is from %s to %s, distance is %s\n", longestAndShortestPath.get(0), longestAndShortestPath.get(longestAndShortestPath.size() - 1), cost);			
+		System.out.printf("Route: %s\n\n",longestAndShortestPath.toString());
 	}
 	
 	
