@@ -43,11 +43,9 @@ public class ShortestPathCalculator {
 		} 
 		catch (FileNotFoundException e) {
 			System.out.println("File not found\n");
-			e.printStackTrace();
 		} 
 		catch (Exception e) {
 			System.out.println(e.toString());
-			e.printStackTrace();
 		}
 	}
 	
