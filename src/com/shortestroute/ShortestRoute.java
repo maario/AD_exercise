@@ -163,13 +163,8 @@ public class ShortestRoute {
 		
 		@Override
 		public boolean add(Vertex vertex) {
-			if (!super.contains(vertex)) {
-				return super.add(vertex);
-			}
-			else {
-				super.remove(vertex);
-				return super.add(vertex);
-			}
+			super.remove(vertex);
+			return super.add(vertex);
 		}	
 	}
 }
