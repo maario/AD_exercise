@@ -151,20 +151,35 @@ public class ShortestRoute {
 				return true;
 			return false;
 		}
+
+		public int getId() {
+			return this.id;
+		}
 	}
 	
 	
 	@SuppressWarnings({ "serial", "hiding" })
 	private static class VertexPriorityQueue<Vertex> extends PriorityQueue<Vertex> {
-		
+		private boolean[] vertexInQueue;
 		public VertexPriorityQueue(int size, Comparator<? super Vertex> vertex) {
 			super(size, vertex);
+			vertexInQueue = new boolean[size+1];
 		}
 		
 		@Override
 		public boolean add(Vertex vertex) {
-			super.remove(vertex);
+			if(vertexInQueue[((com.shortestroute.ShortestRoute.Vertex) vertex).getId()] == true) {
+				super.remove(vertex);
+			}
+			else {
+				vertexInQueue[((com.shortestroute.ShortestRoute.Vertex) vertex).getId()] = true;
+			}
 			return super.add(vertex);
-		}	
+		}
+		public Vertex remove() {
+			Vertex v = super.remove();
+			vertexInQueue[((com.shortestroute.ShortestRoute.Vertex) v).getId()] = false;
+			return v;
+		}
 	}
 }
