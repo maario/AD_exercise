@@ -1,6 +1,7 @@
 package com.shortestroute;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
@@ -104,18 +105,18 @@ public class ShortestRoute {
 		return shortestPath;
 	}
 	
-	
 	private ArrayList<Integer> buildPath(Vertex vertex) {
 		ArrayList<Integer> path = new ArrayList<>();
-		if (vertex.id == startVertexId) {
-			path.add(vertex.id);
+		Vertex v1 = vertex;
+		while(v1.id != startVertexId) {
+			path.add(v1.id);
+			v1 = v1.previousVertex;
 		}
-		else {
-			path = buildPath(vertex.previousVertex);
-			path.add(vertex.id);
-		}
+		path.add(v1.id);
+		Collections.reverse(path);
 		return path;
 	}
+
 	
 	
 	private static class Vertex implements Comparator<Vertex> {
